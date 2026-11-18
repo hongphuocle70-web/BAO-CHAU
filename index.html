@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Học tiếng Trung cùng vợ yêu</title>
+<style>
+body{font-family:Arial;background:#fff0f7;color:#56334d;margin:0;padding:18px}
+h1,h2{text-align:center;color:#d64f91}
+nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+button{background:#df70a6;color:white;border:0;border-radius:12px;padding:12px;margin:5px}
+section{background:white;padding:16px;margin:15px 0;border-radius:16px}
+input,select{padding:12px;width:90%;margin:8px;border:1px solid pink;border-radius:10px}
+.word{font-size:25px;color:#bd4382;font-weight:bold}
+img{width:100%;border-radius:15px;margin-top:10px}
+</style>
+</head>
+<body>
+<h1>🌸 HỌC TIẾNG TRUNG 🌸</h1>
+<p style="text-align:center">Học HSK 1–6 cùng từ điển Việt Trung 💗</p>
+
+<nav>
+<button onclick="show('hsk')">Học HSK</button>
+<button onclick="show('dict')">Từ điển</button>
+<button onclick="show('love')">Công chúa</button>
+</nav>
+
+<section id="hsk">
+<h2>📚 Học từ vựng HSK</h2>
+<select id="level" onchange="loadWords()">
+<option value="1">HSK 1</option>
+<option value="2">HSK 2</option>
+<option value="3">HSK 3</option>
+<option value="4">HSK 4</option>
+<option value="5">HSK 5</option>
+<option value="6">HSK 6</option>
+</select>
+<div id="words"></div>
+</section>
+
+<section id="dict" style="display:none">
+<h2>🔎 TỪ ĐIỂN VIỆT - TRUNG</h2>
+<input id="search" placeholder="Nhập tiếng Việt hoặc tiếng Trung">
+<button onclick="lookup()">Tra từ</button>
+<div id="result"></div>
+</section>
+
+<section id="love" style="display:none">
+<h2>👸 Công chúa của anh</h2>
+<p>🌹 Tặng vợ yêu những điều ngọt ngào nhất! ❤️</p>
+<p>Muốn hiển thị ảnh AI, hãy tải ảnh lên GitHub cùng thư mục với file index.html rồi thêm ảnh vào đây.</p>
+</section>
+
+<script>
+const data=[
+[1,"你好","nǐ hǎo","Xin chào"],
+[1,"谢谢","xièxie","Cảm ơn"],
+[1,"再见","zàijiàn","Tạm biệt"],
+[1,"我","wǒ","Tôi"],
+[1,"你","nǐ","Bạn"],
+[1,"爱","ài","Yêu"],
+[1,"中国","Zhōngguó","Trung Quốc"],
+[2,"因为","yīnwèi","Bởi vì"],
+[2,"所以","suǒyǐ","Cho nên"],
+[2,"觉得","juéde","Cảm thấy"],
+[3,"当然","dāngrán","Đương nhiên"],
+[3,"发现","fāxiàn","Phát hiện"],
+[4,"安排","ānpái","Sắp xếp"],
+[4,"经验","jīngyàn","Kinh nghiệm"],
+[5,"创造","chuàngzào","Sáng tạo"],
+[5,"趋势","qūshì","Xu hướng"],
+[6,"恍然大悟","huǎngrán dàwù","Chợt hiểu ra"],
+[6,"迫不及待","pò bù jí dài","Nóng lòng"]
+];
+
+function speak(word){
+let voice=new SpeechSynthesisUtterance(word);
+voice.lang="zh-CN";
+speechSynthesis.speak(voice);
+}
+
+function loadWords(){
+let level=Number(document.getElementById("level").value);
+let list=data.filter(x=>x[0]===level);
+document.getElementById("words").innerHTML=list.map(x=>
+`<div><p class="word">${x[1]}</p>
+<p>Pinyin: ${x[2]}</p>
+<p>Nghĩa: ${x[3]}</p>
+<button onclick="speak('${x[1]}')">🔊 Nghe đọc</button><hr></div>`
+).join("");
+}
+
+function lookup(){
+let q=document.getElementById("search").value.toLowerCase().trim();
+let found=data.filter(x=>x[1].toLowerCase().includes(q)||x[2].toLowerCase().includes(q)||x[3].toLowerCase().includes(q));
+document.getElementById("result").innerHTML=found.length?
+found.map(x=>`<p class="word">${x[1]}</p><p>${x[2]} - ${x[3]}</p><button onclick="speak('${x[1]}')">🔊 Nghe</button><hr>`).join("")
+:"Chưa tìm thấy từ này.";
+}
+
+function show(id){
+["hsk","dict","love"].forEach(x=>document.getElementById(x).style.display=x===id?"block":"none");
+}
+loadWords();
+</script>
+</body>
+</html>
